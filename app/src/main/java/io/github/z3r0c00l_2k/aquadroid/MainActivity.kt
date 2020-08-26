@@ -7,6 +7,7 @@ import android.os.Handler
 import android.text.TextUtils
 import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.daimajia.androidanimations.library.Techniques
@@ -99,26 +100,7 @@ class MainActivity : AppCompatActivity() {
 
         fabAdd.setOnClickListener {
             if (selectedOption != null) {
-                if ((inTook * 100 / totalIntake) <= 140) {
-                    if (sqliteHelper.addIntook(dateNow, selectedOption!!) > 0) {
-                        inTook += selectedOption!!
-                        setWaterLevel(inTook, totalIntake)
-
-                        Snackbar.make(it, "Your water intake was saved...!!", Snackbar.LENGTH_SHORT)
-                            .show()
-
-                    }
-                } else {
-                    Snackbar.make(it, "You already achieved the goal", Snackbar.LENGTH_SHORT).show()
-                }
-                selectedOption = null
-                tvCustom.text = "Custom"
-                op50ml.background = getDrawable(outValue.resourceId)
-                op100ml.background = getDrawable(outValue.resourceId)
-                op150ml.background = getDrawable(outValue.resourceId)
-                op200ml.background = getDrawable(outValue.resourceId)
-                op250ml.background = getDrawable(outValue.resourceId)
-                opCustom.background = getDrawable(outValue.resourceId)
+                addSelectedOption(it, outValue)
             } else {
                 YoYo.with(Techniques.Shake)
                     .duration(700)
@@ -153,6 +135,9 @@ class MainActivity : AppCompatActivity() {
             if (snackbar != null) {
                 snackbar?.dismiss()
             }
+            if(selectedOption == 50){
+                addSelectedOption(it, outValue)
+            }
             selectedOption = 50
             op50ml.background = getDrawable(R.drawable.option_select_bg)
             op100ml.background = getDrawable(outValue.resourceId)
@@ -166,6 +151,9 @@ class MainActivity : AppCompatActivity() {
         op100ml.setOnClickListener {
             if (snackbar != null) {
                 snackbar?.dismiss()
+            }
+            if(selectedOption == 100){
+                addSelectedOption(it, outValue)
             }
             selectedOption = 100
             op50ml.background = getDrawable(outValue.resourceId)
@@ -181,6 +169,9 @@ class MainActivity : AppCompatActivity() {
             if (snackbar != null) {
                 snackbar?.dismiss()
             }
+            if(selectedOption == 150){
+                addSelectedOption(it, outValue)
+            }
             selectedOption = 150
             op50ml.background = getDrawable(outValue.resourceId)
             op100ml.background = getDrawable(outValue.resourceId)
@@ -195,6 +186,9 @@ class MainActivity : AppCompatActivity() {
             if (snackbar != null) {
                 snackbar?.dismiss()
             }
+            if(selectedOption == 200){
+                addSelectedOption(it, outValue)
+            }
             selectedOption = 200
             op50ml.background = getDrawable(outValue.resourceId)
             op100ml.background = getDrawable(outValue.resourceId)
@@ -208,6 +202,10 @@ class MainActivity : AppCompatActivity() {
         op250ml.setOnClickListener {
             if (snackbar != null) {
                 snackbar?.dismiss()
+            }
+
+            if(selectedOption == 250){
+                addSelectedOption(it, outValue)
             }
             selectedOption = 250
             op50ml.background = getDrawable(outValue.resourceId)
@@ -255,6 +253,29 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    private fun addSelectedOption(it: View, outValue: TypedValue) {
+        if ((inTook * 100 / totalIntake) <= 140) {
+            if (sqliteHelper.addIntook(dateNow, selectedOption!!) > 0) {
+                inTook += selectedOption!!
+                setWaterLevel(inTook, totalIntake)
+
+                Snackbar.make(it, "Your water intake was saved...!!", Snackbar.LENGTH_SHORT)
+                    .show()
+
+            }
+        } else {
+            Snackbar.make(it, "You already achieved the goal", Snackbar.LENGTH_SHORT).show()
+        }
+        selectedOption = null
+        tvCustom.text = "Custom"
+        op50ml.background = getDrawable(outValue.resourceId)
+        op100ml.background = getDrawable(outValue.resourceId)
+        op150ml.background = getDrawable(outValue.resourceId)
+        op200ml.background = getDrawable(outValue.resourceId)
+        op250ml.background = getDrawable(outValue.resourceId)
+        opCustom.background = getDrawable(outValue.resourceId)
     }
 
 
